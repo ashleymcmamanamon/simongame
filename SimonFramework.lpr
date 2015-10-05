@@ -1,14 +1,26 @@
 program SimonFramework;
 Uses sysutils;
 var ChoiceNum : integer;
-
+  name : string;
+  score : integer;
+  scores: array[1..10,1..2] of integer;
+  Colors : Array[1..4] of string; 
+  
+Procedure StartRound(round : integer);
+begin
+end;
 Procedure GenLeaderboard();
   begin
   readln;
   end;
 Procedure GameSetup();
+  var round : integer = 1;
   begin
-  readln;
+  Colors[1]:='Green';
+  Colors[2]:='Red';
+  Colors[3]:='Yellow';
+  Colors[4]:='Blue';   
+  StartRound(round);
   end;
 Procedure GenMenu;
   begin
