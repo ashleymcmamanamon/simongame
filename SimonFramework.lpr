@@ -6,7 +6,6 @@ var ChoiceNum : integer;
   name : string;
   score : integer;
   scores: array[1..10,1..2] of integer;
-<<<<<<< HEAD
   Colors : Array[1..4] of string;
   ColorTally : string;
   TempString, TempString2 : string;
@@ -59,27 +58,6 @@ Procedure StartRound(round : integer);
     ColorTally:=color;
   end
   else
-=======
-  Colors : Array[1..4] of string; 
-  
-Procedure StartRound(round : integer);
-begin
-end;
-Procedure GenLeaderboard();
-  begin
-  readln;
-  end;
-Procedure GameSetup();
-  var round : integer = 1;
-  begin
-  Colors[1]:='Green';
-  Colors[2]:='Red';
-  Colors[3]:='Yellow';
-  Colors[4]:='Blue';   
-  StartRound(round);
-  end;
-Procedure GenMenu;
->>>>>>> master
   begin
     ColorTally:= Concat(ColorTally,',',color);
 
