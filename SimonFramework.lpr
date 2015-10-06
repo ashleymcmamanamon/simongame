@@ -3,12 +3,35 @@ Uses sysutils, crt;
 var ChoiceNum : integer;
   name : string;
   score : integer;
-  scores: array[1..10,1..2] of integer;
+  scores: array[1..10,1..2] of string;
   Colors : Array[1..4] of string;
+  spacesentry: string;
+  i : integer;
+  p: integer;
 
+Procedure SetScores();
+begin
+//This can be removed later, I'm just using it for testing -A
+scores[1][1] := 'Alex';
+scores[1][2]:= '5';
+
+scores[2][1] := 'Player Two';
+scores[2][2] := '6';
+
+scores[3][1] := 'Player Three';
+scores[3][2] := '8';
+  end;
 Procedure StartRound(round : integer);
 begin
 end;
+Procedure spaces(spacesentry:string);
+begin
+    for i := 1 to 30-length(spacesentry) do
+    begin
+      write(' ');
+    end;
+end;
+
 Procedure GenLeaderboard();
   begin
  clrscr();
@@ -29,7 +52,16 @@ Procedure GenLeaderboard();
  writeln();
  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.');
 
+ setscores();
+ writeln();
 
+ for p := 1 to 10 do
+ begin
+ write(scores[p][1]);
+ spaces(scores[p][1]);
+ write(scores[p][2]);
+ writeln();
+ end;
 
   readln;
   end;
