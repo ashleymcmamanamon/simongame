@@ -1,26 +1,32 @@
 program SimonFramework;
-Uses sysutils, crt;
+Uses sysutils, Crt, Classes;
 var ChoiceNum : integer;
   name : string;
   score : integer;
   scores: array[1..10,1..2] of string;
   Colors : Array[1..4] of string;
-  spacesentry: string;
   i : integer;
   p: integer;
+  k: integer;
+  numberofscores: integer;
+  tempsort: string;
+  repeatneeded: boolean;
 
-Procedure SetScores();
+procedure setupsort();
 begin
-//This can be removed later, I'm just using it for testing -A
-scores[1][1] := 'Alex';
-scores[1][2]:= '5';
+  //Can get rid of this
+  scores[1][1] := 'Sample Player One';
+  scores[1][2] := '1';
 
-scores[2][1] := 'Player Two';
-scores[2][2] := '6';
+  scores[2][1] := 'Sample Player Two';
+  scores[2][2] := '7';
 
-scores[3][1] := 'Player Three';
-scores[3][2] := '8';
-  end;
+  scores[3][1] := 'Sample Player Three';
+  scores[3][2] := '3';
+
+  scores[4][1] := 'Sample Player Four';
+  scores[4][2] := '2'
+end;
 Procedure StartRound(round : integer);
 begin
 end;
@@ -31,7 +37,38 @@ begin
       write(' ');
     end;
 end;
+procedure sort();
+begin
+  repeatneeded := false;
+  for i := 1 to numberofscores-1 do
+  begin
+    if strtoint(scores[i][2]) < strtoint(scores[i+1][2]) then
+    begin
+         tempsort := scores[i+1][2];
+         scores[i+1][2] := scores[i][2];
+         scores[i][2] := tempsort;
 
+         tempsort := scores[i+1][1];
+         scores[i+1][1] := scores[i][1];
+         scores[i][1] := tempsort;
+         repeatneeded := true;
+    end;
+  end;
+  if repeatneeded = true then
+    begin
+         sort();
+    end
+    else
+    begin
+       for p := 1 to numberofscores do
+       begin
+            write(scores[p][1]);
+            spaces(scores[p][1]);
+            write(scores[p][2]);
+            writeln();
+       end;
+    end;
+end;
 Procedure GenLeaderboard();
   begin
  clrscr();
@@ -52,16 +89,29 @@ Procedure GenLeaderboard();
  writeln();
  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.');
 
- setscores();
+ setupsort();
  writeln();
 
- for p := 1 to Length(scores) do
+ for p := 1 to numberofscores do
  begin
- write(scores[p][1]);
- spaces(scores[p][1]);
- write(scores[p][2]);
- writeln();
+      write(scores[p][1]);
+      spaces(scores[p][1]);
+      write(scores[p][2]);
  end;
+
+ numberofscores := 0;
+
+  //Counts how many scores there are
+  for i := 1 to Length(scores) do
+  begin
+    if scores[i][2] <> '' then
+    begin
+         numberofscores := numberofscores + 1;
+    end;
+  end;
+
+  //Sorts
+  Sort();
 
   readln;
   end;
