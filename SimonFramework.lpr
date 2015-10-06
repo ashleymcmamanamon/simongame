@@ -1,7 +1,7 @@
 program SimonFramework;
-
+ 
 Uses sysutils, Crt, Classes;
-
+ 
 var ChoiceNum : integer;
   name : string;
   score : integer;
@@ -11,9 +11,29 @@ var ChoiceNum : integer;
   TempString, TempString2 : string;
   time : LongWord;
   menu : integer;
-
+ 
+Procedure SaveScore(score : integer);
+var index : integer;
+begin
+write(scores[1,0]);
+for index := 0 to Length(scores) do
+  if scores[index,0] = 0 then
+    scores[index,1] := score;
+readln;
+end;
+ 
+Procedure writeslow(s : string);
+  var index : integer;
+begin
+  for index := 1 to Length(s) do
+    begin
+      delay(50);
+      write(Copy(s,index,1));
+    end;
+end;
 Procedure GenSettings; forward;
 Procedure GenLeaderboard; forward;
+Procedure MenuChoice; forward;
 Procedure GenMenu; forward;
 Procedure ChangeDelay();
 begin
@@ -60,7 +80,7 @@ Procedure StartRound(round : integer);
   else
   begin
     ColorTally:= Concat(ColorTally,',',color);
-
+ 
   end;
   writeln(#13#10+'Round '+IntToStr(round));
   Sleep(time);
@@ -70,7 +90,7 @@ Procedure StartRound(round : integer);
       begin
         if index = 1 then
         begin
-
+ 
           TempString:=Copy(ColorTally, 0, Pos(',', ColorTally)-1);
           TempString2:=Copy(ColorTally, Pos(',', ColorTally)+1, Length(ColorTally)-Pos(',', ColorTally));
           TempString2:=Concat(TempString2,',',color);
@@ -104,8 +124,13 @@ Procedure StartRound(round : integer);
   end
   else
   begin
-    writeln('Wrong!')
-  end;
+    if round > 1 then
+      writeln('Wrong! Sorry the colors were ', ColorTally, '. You reached Round ', round)
+    else
+      writeln('Wrong! Sorry the color was ', ColorTally, '. You reached Round ', round)  end;
+  SaveScore(round);
+  GenMenu();
+  MenuChoice();
   end;
 Procedure GameSetup();
   var round : integer = 1;
@@ -117,11 +142,11 @@ Procedure GameSetup();
   StartRound(round);
   end;
 Procedure MenuChoice();
-
+ 
   begin
   if menu = 1 then
   begin
-    write('Enter your option as a integer: ');
+    writeslow('Enter your option as an integer: ');
     readln(ChoiceNum);
     if ChoiceNum = 1 then
     begin
@@ -143,7 +168,7 @@ Procedure MenuChoice();
   end;
   if menu = 2 then
   begin
-    write('Enter the setting you wish to change as a integer or type 0 to return '+#13#10+'to the Menu: ');
+    writeslow('Enter the setting you wish to change as an integer or type 0 to return '+#13#10+'to the Menu: ');
     readln(ChoiceNum);
     if ChoiceNum = 0 then
     begin
@@ -185,6 +210,7 @@ Procedure GenLeaderboard();
   end;
 Procedure GenMenu();
   begin
+  clrscr();
   menu:=1;
   writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.'+#13#10);
   writeln('  ___  ___ _____ _   _ _   _'+#13#10+'  |  \/  ||  ___| \ | | | | |'+#13#10+'  | .  . || |__ |  \| | | | |'+#13#10+'  | |\/| ||  __|| . ` | | | |'+#13#10+'  | |  | || |___| |\  | |_| |'+#13#10+'  \_|  |_/\____/\_| \_/\___/'+#13#10);
