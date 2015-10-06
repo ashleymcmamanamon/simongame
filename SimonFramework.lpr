@@ -55,7 +55,7 @@ Procedure GenLeaderboard();
  setscores();
  writeln();
 
- for p := 1 to 10 do
+ for p := 1 to Length(scores) do
  begin
  write(scores[p][1]);
  spaces(scores[p][1]);
