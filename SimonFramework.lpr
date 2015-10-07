@@ -1,5 +1,5 @@
-program simonframework;
-Uses sysutils, Crt, Classes;
+program SIMON2;
+Uses sysutils, Crt, Classes, mmsystem;
 var ChoiceNum : integer;
   name : string;
   score : integer;
@@ -11,6 +11,8 @@ var ChoiceNum : integer;
   numberofscores: integer;
   tempsort: string;
   repeatneeded: boolean;
+  line:string;
+  linetemp:string;
 
 procedure setupsort();
 begin
@@ -91,6 +93,7 @@ end;
 Procedure GenLeaderboard();
   begin
  clrscr();
+
  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.');
  writeln();
  writeln(' _      ______          _____  ______ _____  ');
@@ -131,6 +134,9 @@ Procedure GenLeaderboard();
 
   //Sorts
   Sort();
+
+  writeln();
+  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.');
 
   readln;
   end;
