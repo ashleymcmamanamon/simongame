@@ -1,142 +1,111 @@
-program SIMON2;
+program SimonFramework;
+
 Uses sysutils, Crt, Classes;
+
 var ChoiceNum : integer;
   name : string;
   score : integer;
-  scores: array[1..10,1..2] of string;
+  scores: array[1..10,1..2] of integer;
   Colors : Array[1..4] of string;
-  i : integer;
-  p: integer;
-  k: integer;
-  numberofscores: integer;
-  tempsort: string;
-  repeatneeded: boolean;
+  ColorTally : string;
+  TempString, TempString2 : string;
+  time : LongWord;
+  menu : integer;
 
-procedure setupsort();
+Procedure GenSettings; forward;
+Procedure GenLeaderboard; forward;
+Procedure GenMenu; forward;
+Procedure ChangeDelay();
 begin
-  //Can get rid of this
-  scores[1][1] := 'Sample Player One';
-  scores[1][2] := '1';
-
-  scores[2][1] := 'Sample Player Two';
-  scores[2][2] := '7';
-
-  scores[3][1] := 'Sample Player Three';
-  scores[3][2] := '3';
-
-  scores[4][1] := 'Sample Player Four';
-  scores[4][2] := '2'
+  write('Enter the time in seconds you wish to change the Delay Time to: ');
+  readln(time);
+  time:=time*1000;
+  GenSettings();
 end;
+Procedure ShowColor(color : string; no : integer);
+begin
+   ClrScr();
+  if color = 'Green' then
+    TextColor(Green);
+  if color = 'Red' then
+    TextColor(Red);
+  if color = 'Yellow' then
+    TextColor(Yellow);
+  if color = 'Blue' then
+    TextColor(Blue);
+  writeln('('+IntToStr(no)+')'+color+#13#10);
+  Sleep(time);
+  ClrScr();
+end;
+function OccurrencesOfChar(const S: string; const C: char): integer;
+    var
+      i: Integer;
+    begin
+      result := 0;
+      for i := 1 to Length(S) do
+        if S[i] = C then
+          inc(result);
+    end;
 Procedure StartRound(round : integer);
-begin
-end;
-Procedure spaces(spacesentry:string);
-begin
-    for i := 1 to 30-length(spacesentry) do
-    begin
-      write(' ');
-    end;
-end;
-procedure highscore();
-begin
- for k := 1 to 3 do
- begin
-   for i :=3 to 15 do
-   begin
-     clrscr();
-     textcolor(i);
-     writeln(' _    _ _____ _____ _    _    _____  _____ ____  _____  ______ _ ');
-     writeln('| |  | |_   _/ ____| |  | |  / ____|/ ____/ __ \|  __ \|  ____| |');
-     writeln('| |__| | | || |  __| |__| | | (___ | |   | |  | | |__) | |__  | |');
-     writeln('|  __  | | || | |_ |  __  |  \___ \| |   | |  | |  _  /|  __| | |');
-     writeln('| |  | |_| || |__| | |  | |  ____) | |___| |__| | | \ \| |____|_|');
-     writeln('|_|  |_|_____\_____|_|  |_| |_____/ \_____\____/|_|  \_\______(_)');
-     delay(100);
-   end;
- end;
-end;
-
-procedure sort();
-begin
-  repeatneeded := false;
-  for i := 1 to numberofscores-1 do
+  var color : string;
+    ColorInput : string;
+    index : integer;
   begin
-    if strtoint(scores[i][2]) < strtoint(scores[i+1][2]) then
-    begin
-         tempsort := scores[i+1][2];
-         scores[i+1][2] := scores[i][2];
-         scores[i][2] := tempsort;
+  Randomize;
+  color := Colors[Random(4)+1];
+  if round = 1 then
+  begin
+    ColorTally:=color;
+  end
+  else
+  begin
+    ColorTally:= Concat(ColorTally,',',color);
 
-         tempsort := scores[i+1][1];
-         scores[i+1][1] := scores[i][1];
-         scores[i][1] := tempsort;
-         repeatneeded := true;
-    end;
   end;
-  if repeatneeded = true then
+  writeln(#13#10+'Round '+IntToStr(round));
+  Sleep(time);
+  for index := 1 to (OccurrencesOfChar(ColorTally, ',')+1) do
     begin
-         sort();
-    end
-    else
-    begin
-       for p := 1 to numberofscores do
-       begin
-            write(scores[p][1]);
-            spaces(scores[p][1]);
-            write(scores[p][2]);
-            writeln();
-       end;
+      if round > 1 then
+      begin
+        if index = 1 then
+        begin
+
+          TempString:=Copy(ColorTally, 0, Pos(',', ColorTally)-1);
+          TempString2:=Copy(ColorTally, Pos(',', ColorTally)+1, Length(ColorTally)-Pos(',', ColorTally));
+          TempString2:=Concat(TempString2,',',color);
+          ShowColor(TempString, index);
+        end
+        else
+        begin
+          TempString:=Copy(TempString2, 0, Pos(',', TempString2)-1);
+          TempString2:=Copy(TempString2, Pos(',', TempString2)+1, Length(TempString2)-Pos(',', TempString2));
+          ShowColor(TempString, index);
+        end;
+      end
+      else if round = 1 then
+        TempString:=ColorTally;
+        ShowColor(TempString, index);
     end;
-end;
-Procedure GenLeaderboard();
+  TextColor(White);
+  if round = 1 then
   begin
- clrscr();
-
- writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.');
- writeln();
- writeln(' _      ______          _____  ______ _____  ');
- writeln('| |    |  ____|   /\   |  __ \|  ____|  __ \');
- writeln('| |    | |__     /  \  | |  | | |__  | |__) | ');
- writeln('| |    |  __|   / /\ \ | |  | |  __| |  _  /');
- writeln('| |____| |____ / ____ \| |__| | |____| | \ \');
- writeln('|______|______/_/    \_\_____/|______|_|  \_\');
- writeln(' ____   ____          _____  _____');
- writeln('|  _ \ / __ \   /\   |  __ \|  __ \');
- writeln('| |_) | |  | | /  \  | |__) | |  | |');
- writeln('|  _ <| |  | |/ /\ \ |  _  /| |  | |');
- writeln('| |_) | |__| / ____ \| | \ \| |__| |');
- writeln('|____/ \____/_/    \_\_|  \_\_____/ ');
- writeln();
- writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.');
-
- setupsort();
- writeln();
-
- for p := 1 to numberofscores do
- begin
-      write(scores[p][1]);
-      spaces(scores[p][1]);
-      write(scores[p][2]);
- end;
-
- numberofscores := 0;
-
-  //Counts how many scores there are
-  for i := 1 to Length(scores) do
+    write('Enter color(e.g. Blue): ')
+  end
+  else
   begin
-    if scores[i][2] <> '' then
-    begin
-         numberofscores := numberofscores + 1;
-    end;
+    write('Enter colors(e.g. Blue,Green): ')
   end;
-
-  //Sorts
-  Sort();
-
-  writeln();
-  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.');
-
-  readln;
+  readln(ColorInput);
+  if ColorInput = ColorTally then
+  begin
+    round:= round + 1;
+    StartRound(round)
+  end
+  else
+  begin
+    writeln('Wrong!')
+  end;
   end;
 Procedure GameSetup();
   var round : integer = 1;
@@ -147,33 +116,85 @@ Procedure GameSetup();
   Colors[4]:='Blue';
   StartRound(round);
   end;
-Procedure GenMenu;
+Procedure MenuChoice();
+
   begin
-  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.'+#13#10);
-  writeln('  ___  ___ _____ _   _ _   _'+#13#10+'  |  \/  ||  ___| \ | | | | |'+#13#10+'  | .  . || |__ |  \| | | | |'+#13#10+'  | |\/| ||  __|| . ` | | | |'+#13#10+'  | |  | || |___| |\  | |_| |'+#13#10+'  \_|  |_/\____/\_| \_/\___/'+#13#10);
-  writeln('    (1) Play'+#13#10+'    (2) Leaderboards '+#13#10);
-  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.'+#13#10);
+  if menu = 1 then
+  begin
+    write('Enter your option as a integer: ');
+    readln(ChoiceNum);
+    if ChoiceNum = 1 then
+    begin
+      GameSetup()
+    end
+    else if ChoiceNum = 2 then
+    begin
+      GenSettings()
+    end
+    else if ChoiceNum = 3 then
+    begin
+      GenLeaderboard()
+    end
+    else
+    begin
+      writeln('Invalid entry, please check your input.'+#13#10);
+      MenuChoice();
+    end;
   end;
-Procedure MenuChoice;
+  if menu = 2 then
   begin
-  write('Enter your option as a integer: ');
-  readln(ChoiceNum);
-  if ChoiceNum = 1 then
+    write('Enter the setting you wish to change as a integer or type 0 to return '+#13#10+'to the Menu: ');
+    readln(ChoiceNum);
+    if ChoiceNum = 0 then
+    begin
+      GenMenu();
+      MenuChoice()
+    end
+    else if ChoiceNum = 1 then
+    begin
+      ChangeDelay()
+    end
+    else if ChoiceNum = 2 then
+    begin
+      GenSettings()
+    end
+    else if ChoiceNum = 3 then
+    begin
+      GenLeaderboard()
+    end
+    else
+    begin
+      writeln('Invalid entry, please check your input.'+#13#10);
+      MenuChoice();
+    end;
+  end;
+  end;
+Procedure GenSettings();
   begin
-    GameSetup()
-  end
-  else if ChoiceNum = 2 then
-  begin
-    GenLeaderboard()
-  end
-  else
-  begin
-    writeln('Invalid entry, please check your input.'+#13#10);
+    clrscr();
+    menu:=2;
+    writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.'+#13#10);
+    writeln(' _____      _   _   _'+#13#10+'/  ___|    | | | | (_)'+#13#10+'\ `--.  ___| |_| |_ _ _ __   __ _ ___'+#13#10+' `--. \/ _ \ __| __| | ''_ \ / _` / __|'+#13#10+'/\__/ /  __/ |_| |_| | | | | (_| \__ \'+#13#10+'\____/ \___|\__|\__|_|_| |_|\__, |___/'+#13#10+'                             __/ |'+#13#10+'                            |___/     ');
+    writeln('    (1) Delay Time (Time color is shown before dissapearing.) : '+FloatToStr(time/1000)+' Secs'+#13#10+'    (2) N/A '+#13#10+'    (3) N/A '+#13#10);
+    writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.'+#13#10);
     MenuChoice();
   end;
+Procedure GenLeaderboard();
+  begin
+  readln;
+  end;
+Procedure GenMenu();
+  begin
+  menu:=1;
+  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.'+#13#10);
+  writeln('  ___  ___ _____ _   _ _   _'+#13#10+'  |  \/  ||  ___| \ | | | | |'+#13#10+'  | .  . || |__ |  \| | | | |'+#13#10+'  | |\/| ||  __|| . ` | | | |'+#13#10+'  | |  | || |___| |\  | |_| |'+#13#10+'  \_|  |_/\____/\_| \_/\___/'+#13#10);
+  writeln('    (1) Play'+#13#10+'    (2) Settings '+#13#10+'    (3) Leaderboards '+#13#10);
+  writeln('.:*~*:._.:*~*:._.:*~*:._.:*~*:.'+#13#10);
   end;
 begin
+time:= 1000;
 GenMenu();
 MenuChoice();
 readln;
 end.
+
