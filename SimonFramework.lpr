@@ -1,4 +1,4 @@
-program SimonFramework;
+program simonframework;
 Uses sysutils, Crt, Classes;
 var ChoiceNum : integer;
   name : string;
@@ -37,6 +37,25 @@ begin
       write(' ');
     end;
 end;
+procedure highscore();
+begin
+ for k := 1 to 3 do
+ begin
+   for i :=3 to 15 do
+   begin
+     clrscr();
+     textcolor(i);
+     writeln(' _    _ _____ _____ _    _    _____  _____ ____  _____  ______ _ ');
+     writeln('| |  | |_   _/ ____| |  | |  / ____|/ ____/ __ \|  __ \|  ____| |');
+     writeln('| |__| | | || |  __| |__| | | (___ | |   | |  | | |__) | |__  | |');
+     writeln('|  __  | | || | |_ |  __  |  \___ \| |   | |  | |  _  /|  __| | |');
+     writeln('| |  | |_| || |__| | |  | |  ____) | |___| |__| | | \ \| |____|_|');
+     writeln('|_|  |_|_____\_____|_|  |_| |_____/ \_____\____/|_|  \_\______(_)');
+     delay(100);
+   end;
+ end;
+end;
+
 procedure sort();
 begin
   repeatneeded := false;
