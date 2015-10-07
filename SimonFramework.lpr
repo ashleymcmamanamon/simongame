@@ -1,4 +1,4 @@
-program SIMON2;
+program simonframework;
 Uses sysutils, Crt, Classes;
 var ChoiceNum : integer;
   name : string;
