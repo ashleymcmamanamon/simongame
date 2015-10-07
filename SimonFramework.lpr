@@ -1,5 +1,5 @@
 program SIMON2;
-Uses sysutils, Crt, Classes, mmsystem;
+Uses sysutils, Crt, Classes;
 var ChoiceNum : integer;
   name : string;
   score : integer;
@@ -11,8 +11,6 @@ var ChoiceNum : integer;
   numberofscores: integer;
   tempsort: string;
   repeatneeded: boolean;
-  line:string;
-  linetemp:string;
 
 procedure setupsort();
 begin
