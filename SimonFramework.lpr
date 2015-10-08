@@ -1,4 +1,4 @@
-program simonframework;
+program SIMON2;
 Uses sysutils, Crt, Classes;
 var ChoiceNum : integer;
   name : string;
@@ -14,7 +14,7 @@ var ChoiceNum : integer;
 
 procedure setupsort();
 begin
-  //Can get rid of this
+  //Sets up some sample players for use in the leaderboard
   scores[1][1] := 'Sample Player One';
   scores[1][2] := '1';
 
@@ -88,6 +88,7 @@ begin
        end;
     end;
 end;
+
 Procedure GenLeaderboard();
   begin
  clrscr();
